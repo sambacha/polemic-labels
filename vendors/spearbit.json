@@ -1,0 +1,62 @@
+[
+  {
+    "color": "ff0000",
+    "description": "",
+    "name": "Severity: Critical Risk"
+  },
+  {
+    "color": "B60205",
+    "description": "",
+    "name": "Severity: High Risk"
+  },
+  {
+    "color": "D93F0B",
+    "description": "",
+    "name": "Severity: Medium Risk"
+  },
+  {
+    "color": "1D76DB",
+    "description": "",
+    "name": "Severity: Informational"
+  },
+  {
+    "color": "FBCA04",
+    "description": "",
+    "name": "Severity: Low Risk"
+  },
+  {
+    "color": "B4E197",
+    "description": "",
+    "name": "Severity: Gas Optimization"
+  },
+  {
+    "color": "5319E7",
+    "description": "",
+    "name": "Status: Acknowledged"
+  },
+  {
+    "color": "0E8A16",
+    "description": "",
+    "name": "Status: Fixed"
+  },
+  {
+    "color": "FBCA04",
+    "description": "Invariants and areas for monitoring",
+    "name": "Monitoring ☎:"
+  },
+  {
+    "color": "bfdadc",
+    "description": "",
+    "name": "Status: ReadyForReport"
+  },
+  {
+    "color": "7DF727",
+    "description": "Specification related requirements",
+    "name": "Requirements"
+  },
+  {
+    "color": "21BEEC",
+    "description": "Rough Ideas, not feature requests",
+    "name": "Consider"
+  }
+]
