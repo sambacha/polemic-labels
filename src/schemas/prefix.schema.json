@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GitHub Prefix Labels Schema",
+  "description": "Schema for validating GitHub prefix label configurations",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["name", "color", "description"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The name of the label with appropriate prefix",
+        "pattern": "^(Effort|Priority|State|Type|Work): [a-zA-Z0-9]+$",
+        "minLength": 3
+      },
+      "color": {
+        "type": "string",
+        "description": "The color of the label as a 6-character hex code without the # prefix",
+        "pattern": "^[0-9a-fA-F]{6}$"
+      },
+      "description": {
+        "type": "string",
+        "description": "A description of the label's purpose",
+        "minLength": 1
+      }
+    },
+    "additionalProperties": false
+  },
+  "uniqueItems": true
+}

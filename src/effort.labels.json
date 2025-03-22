@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Effort: 1",
+    "color": "f6f6f6",
+    "description": "Minimal effort required (1 point)"
+  },
+  {
+    "name": "Effort: 2",
+    "color": "e2e2e2",
+    "description": "Very small effort required (2 points)"
+  },
+  {
+    "name": "Effort: 3",
+    "color": "8b8b8b",
+    "description": "Small effort required (3 points)"
+  },
+  {
+    "name": "Effort: 5",
+    "color": "6f6f6f",
+    "description": "Medium effort required (5 points)"
+  },
+  {
+    "name": "Effort: 8",
+    "color": "3e3e3e",
+    "description": "Large effort required (8 points)"
+  },
+  {
+    "name": "Effort: 13",
+    "color": "222222",
+    "description": "Very large effort required (13 points)"
+  }
+]

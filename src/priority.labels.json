@@ -1,0 +1,17 @@
+[
+      {
+    "name": "Priority: now",
+    "color": "ff4647",
+    "description": "Needs immediate attention"
+  },
+  {
+    "name": "Priority: 2day",
+    "color": "fd4d00",
+    "description": "Should be addressed within 2 days"
+  },
+  {
+    "name": "Priority: soon",
+    "color": "ffe53e",
+    "description": "Should be addressed soon"
+  }
+]

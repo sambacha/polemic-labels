@@ -1,0 +1,172 @@
+[
+  {
+    "name": "Effort: 1",
+    "color": "f6f6f6",
+    "description": "Minimal effort required (1 points)"
+  },
+  {
+    "name": "Effort: 2",
+    "color": "e2e2e2",
+    "description": "Very small effort required (2 points)"
+  },
+  {
+    "name": "Effort: 3",
+    "color": "8b8b8b",
+    "description": "Small effort required (3 points)"
+  },
+  {
+    "name": "Effort: 5",
+    "color": "6f6f6f",
+    "description": "Medium effort required (5 points)"
+  },
+  {
+    "name": "Effort: 8",
+    "color": "3e3e3e",
+    "description": "Large effort required (8 points)"
+  },
+  {
+    "name": "Effort: 13",
+    "color": "222222",
+    "description": "Very large effort required (13 points)"
+  },
+  {
+    "name": "Priority: now",
+    "color": "ff4647",
+    "description": "Needs immediate attention"
+  },
+  {
+    "name": "Priority: 2day",
+    "color": "fd4d00",
+    "description": "Should be addressed within 2 days"
+  },
+  {
+    "name": "Priority: soon",
+    "color": "ffe53e",
+    "description": "Should be addressed soon"
+  },
+  {
+    "name": "State: approved",
+    "color": "72ff6c",
+    "description": "Approved for implementation"
+  },
+  {
+    "name": "State: blocked",
+    "color": "ff4647",
+    "description": "Blocked, cannot proceed"
+  },
+  {
+    "name": "State: inactive",
+    "color": "8b8b8b",
+    "description": "Not currently being worked on"
+  },
+  {
+    "name": "State: pending",
+    "color": "ffe53e",
+    "description": "Awaiting decision or action"
+  },
+  {
+    "name": "Type: bug",
+    "color": "ff4647",
+    "description": "Something isn't working correctly"
+  },
+  {
+    "name": "Type: chore",
+    "color": "8b8b8b",
+    "description": "Maintenance task with no user-facing value"
+  },
+  {
+    "name": "Type: discussion",
+    "color": "0089fc",
+    "description": "Discussion or feedback needed"
+  },
+  {
+    "name": "Type: docs",
+    "color": "42ffc6",
+    "description": "Documentation addition or update"
+  },
+  {
+    "name": "Type: feature",
+    "color": "72ff6c",
+    "description": "New feature or enhancement"
+  },
+  {
+    "name": "Type: fix",
+    "color": "fd4d00",
+    "description": "Bug fix or error correction"
+  },
+  {
+    "name": "Type: security",
+    "color": "ff2fb2",
+    "description": "Security vulnerability or concern"
+  },
+  {
+    "name": "Type: testing",
+    "color": "00ffe4",
+    "description": "Test creation or modification"
+  },
+  {
+    "name": "Work: chaotic",
+    "color": "ff4647",
+    "description": "Unpredictable work with high uncertainty"
+  },
+  {
+    "name": "Work: complex",
+    "color": "fd4d00",
+    "description": "Work with many interconnected parts"
+  },
+  {
+    "name": "Work: complicated",
+    "color": "ffe53e",
+    "description": "Detailed work requiring expertise"
+  },
+  {
+    "name": "Work: obvious",
+    "color": "72ff6c",
+    "description": "Clear, straightforward work"
+  },
+  {
+    "name": "Assignee",
+    "color": "d150ff",
+    "description": "The person assigned to the task [user:username]"
+  },
+  {
+    "name": "Cycle",
+    "color": "0089fc",
+    "description": "The current iteration cycle [sprint:Sprint 1]"
+  },
+  {
+    "name": "Effort",
+    "color": "fd4d00",
+    "description": "The amount of work required [points:5]"
+  },
+  {
+    "name": "Estimate",
+    "color": "b98300",
+    "description": "The estimated time to complete the task [hours:3]"
+  },
+  {
+    "name": "Hours",
+    "color": "00fafb",
+    "description": "Actual hours spent on the task [logged:2.5]"
+  },
+  {
+    "name": "Priority",
+    "color": "ff426c",
+    "description": "The task priority level [level:High]"
+  },
+  {
+    "name": "Project",
+    "color": "657eff",
+    "description": "The project to which the task belongs [name:Project Alpha]"
+  },
+  {
+    "name": "State",
+    "color": "72ff6c",
+    "description": "The current state of the task [status:In Progress]"
+  },
+  {
+    "name": "Status",
+    "color": "5dffa2",
+    "description": "The overall task status [state:Open]"
+  }
+]

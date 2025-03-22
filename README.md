@@ -107,3 +107,64 @@
 | work: complex     | d4c5f9 | The situation is complex, emergent practices used.                                      | complex                                                                                                                     |
 | work: complicated | ffb8c6 | The situation is complicated, good practices used.                                      | complicated                                                                                                                 |
 | work: obvious     | 91ca55 | The situation is obvious, best practices used.                                          | obvious                                                                                                                     |
+
+
+## Tests
+
+> [!NOTE]
+> Tests:  5 failed, 55 passed, 60 total
+
+
+```
+    Base Schema Validation
+      ✓ all labels should validate against base schema (17 ms)
+      ✓ prefix labels should validate against base schema
+      ✓ reserved labels should validate against base schema
+    Prefix Labels
+      ✓ should validate against prefix schema (1 ms)
+      ✓ should have unique names
+      ✓ should have valid prefixes (2 ms)
+      ✓ should contain all required Effort values
+      ✓ should contain all required Priority values
+      ✓ should contain all required State values (1 ms)
+      ✓ should contain all required Type values
+      ✓ should contain all required Work values (1 ms)
+      ✓ should have valid hex colors (1 ms)
+      ✓ should have non-empty descriptions
+    Reserved Labels
+      ✓ should validate against reserved schema (2 ms)
+      ✓ should have unique names
+      ✓ should include all required reserved labels
+      ✓ should have key-value pair notation in descriptions (1 ms)
+      ✓ should have valid hex colors
+      ✓ should have non-empty descriptions
+    Integration Tests
+      ✓ should have no name collisions between prefix and reserved labels
+      ✓ should maintain consistent color semantics (1 ms)
+      ✓ effort labels should use a grayscale progression
+    File Integrity
+      ✓ JSON files should be parseable
+      ✓ schema files should be valid JSON Schema
+    GitHub API Compatibility
+      ✓ label names should not exceed GitHub length limits (1 ms)
+      ✓ color values should not include # prefix (1 ms)
+      ✓ label descriptions should not exceed GitHub limits (1 ms)
+```
+
+
+### Quickcheck 
+
+```
+  GitHub Labels QuickCheck Tests
+    ✕ All valid labels should conform to the base schema (73 ms)
+    ✕ All valid prefix labels should conform to the prefix schema (577 ms)
+    ✕ All valid reserved labels should conform to the reserved schema (1818 ms)
+    ✕ Labels should have unique names in any valid array (2590 ms)
+    ✓ Prefix labels should start with valid prefixes (12401 ms)
+    ✓ Label colors should be 6-character hex strings without # prefix (13323 ms)
+    ✓ Reserved labels should have key-value pairs in their descriptions (9960 ms)
+    ✓ Valid label colors should be permissible in our color system (10419 ms)
+    ✕ Effort labels should have valid Fibonacci values (712 ms)
+    ✓ No name collisions should exist between prefix and reserved labels (19954 ms)
+
+```

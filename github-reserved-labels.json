@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Assignee",
+    "color": "d150ff",
+    "description": "The person assigned to the task [user:username]"
+  },
+  {
+    "name": "Cycle",
+    "color": "0089fc",
+    "description": "The current iteration cycle [sprint:Sprint 1]"
+  },
+  {
+    "name": "Effort",
+    "color": "fd4d00",
+    "description": "The amount of work required [points:5]"
+  },
+  {
+    "name": "Estimate",
+    "color": "b98300",
+    "description": "The estimated time to complete the task [hours:3]"
+  },
+  {
+    "name": "Hours",
+    "color": "00fafb",
+    "description": "Actual hours spent on the task [logged:2.5]"
+  },
+  {
+    "name": "Priority",
+    "color": "ff426c",
+    "description": "The task priority level [level:High]"
+  },
+  {
+    "name": "Project",
+    "color": "657eff",
+    "description": "The project to which the task belongs [name:Project Alpha]"
+  },
+  {
+    "name": "State",
+    "color": "72ff6c",
+    "description": "The current state of the task [status:In Progress]"
+  },
+  {
+    "name": "Status",
+    "color": "5dffa2",
+    "description": "The overall task status [state:Open]"
+  }
+]

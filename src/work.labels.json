@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Work: chaotic",
+    "color": "ff4647",
+    "description": "Unpredictable work with high uncertainty"
+  },
+  {
+    "name": "Work: complex",
+    "color": "fd4d00",
+    "description": "Work with many interconnected parts"
+  },
+  {
+    "name": "Work: complicated",
+    "color": "ffe53e",
+    "description": "Detailed work requiring expertise"
+  },
+  {
+    "name": "Work: obvious",
+    "color": "72ff6c",
+    "description": "Clear, straightforward work"
+  }
+]
