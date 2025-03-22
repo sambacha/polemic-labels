@@ -27,7 +27,11 @@
 
 ## Abstract
 
-Polemic Labels is a comprehensive and methodologically rigorous classification schema for Linear and GitHub (and any other 'task'/'bug' tracker) issue management, incorporating empirically-validated contrast ratio recommendations in accordance with Web Content Accessibility Guidelines 2.0 to ensure optimal visual perception across diverse user populations.
+Polemic Labels is a comprehensive and methodologically rigorous classification schema for Linear and GitHub (and any other 'task'/'bug' tracker) issue management, incorporating empirically-validated contrast ratio recommendations. It is color blind safe, coherant, and can be applied to your GitHub repo using the `gh` command line tool. It also takes into consideration `bot` accounts, so that these labels can be utilized by automated accounts for specific purposes. These labels do not impose any sort of triage or issue tracking metholodgy, they are only taxonomic and abstracted.
+
+
+> [!CAUTION]
+> **TLDR: Emojis are distracting**
 
 ## Color Theory[^1]
 
