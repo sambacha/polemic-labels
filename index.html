@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polemic Labeling System</title>
+  <!-- ignore -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind configuration
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          minWidth: {
+            '20': '5rem',
+          },
+          colors: {
+            gray: {
+              50: '#f6f8fa',
+              100: '#eaeef2',
+              200: '#e1e4e8',
+              300: '#d1d5da',
+              400: '#959da5',
+              500: '#6a737d',
+              600: '#586069',
+              700: '#30363d',
+              800: '#21262d',
+              900: '#0d1117',
+            },
+            blue: {
+              600: '#0366d6',
+            },
+          },
+        },
+      }
+    };
+
+    // Memory-safe storage implementation
+    window.safeStorage = {
+      inMemoryStorage: {},
+
+      getItem(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (e) {
+          return this.inMemoryStorage[key] || null;
+        }
+      },
+
+      setItem(key, value) {
+        try {
+          localStorage.setItem(key, value);
+        } catch (e) {
+          this.inMemoryStorage[key] = value;
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Base transition styles */
+    * {
+      transition-property: color, background-color, border-color;
+      transition-duration: 300ms;
+    }
+
+    /* Hide sections based on active filter */
+    [data-section] {
+      display: block;
+    }
+
+    .filter-active-effort [data-section]:not([data-section="effort"]),
+    .filter-active-priority [data-section]:not([data-section="priority"]),
+    .filter-active-state [data-section]:not([data-section="state"]),
+    .filter-active-type [data-section]:not([data-section="type"]),
+    .filter-active-work [data-section]:not([data-section="work"]),
+    .filter-active-reserved [data-section]:not([data-section="reserved"]) {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
+  <header class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-8 transition-colors duration-300">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <div class="flex-1">
+          <h1 class="text-3xl font-bold mb-2">GitHub Label System</h1>
+          <p class="text-gray-600 dark:text-gray-400">
+            A comprehensive, color-coded system for organizing GitHub issues and pull requests
+          </p>
+        </div>
+        <div class="mt-4 md:mt-0 md:ml-4 flex items-center">
+          <label class="inline-flex items-center cursor-pointer">
+            <div class="relative">
+              <input type="checkbox" class="sr-only" id="theme-toggle">
+              <div class="block w-14 h-7 rounded-full bg-gray-600 dark:bg-blue-600">
+                <div class="flex justify-between items-center px-1.5 h-full text-xs">
+                  <span class="text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                  </span>
+                  <span class="text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+              <div class="dot absolute top-0.5 left-0.5 bg-white w-6 h-6 rounded-full transition-transform duration-300 dark:translate-x-7"></div>
+            </div>
+            <span id="theme-label" class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+              Dark Mode
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-6 max-w-6xl" id="main-content">
+    <section class="mb-8">
+      <p class="text-gray-700 dark:text-gray-300">
+        This system provides a consistent taxonomy of labels across repositories, making it easier to filter, sort, and understand issues at a glance. Labels are organized into two main groups: prefix labels (categorized by function) and reserved labels (for metadata).
+      </p>
+    </section>
+
+    <!-- Filter Controls -->
+    <div class="flex flex-wrap gap-2 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg mb-6 transition-colors duration-300">
+      <button
+        data-filter="all"
+        class="filter-button px-4 py-2 rounded-full border min-w-20 text-center transition-colors duration-200 bg-blue-600 text-white border-blue-600">
+        All
+      </button>
+      <button
+        data-filter="effort"
+        class="filter-button px-4 py-2 rounded-full border min-w-20 text-center transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+        Effort
+      </button>
+      <button
+        data-filter="priority"
+        class="filter-button px-4 py-2 rounded-full border min-w-20 text-center transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+        Priority
+      </button>
+      <button
+        data-filter="state"
+        class="filter-button px-4 py-2 rounded-full border min-w-20 text-center transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+        State
+      </button>
+      <button
+        data-filter="type"
+        class="filter-button px-4 py-2 rounded-full border min-w-20 text-center transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+        Type
+      </button>
+      <button
+        data-filter="work"
+        class="filter-button px-4 py-2 rounded-full border min-w-20 text-center transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+        Work
+      </button>
+      <button
+        data-filter="reserved"
+        class="filter-button px-4 py-2 rounded-full border min-w-20 text-center transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600">
+        Reserved
+      </button>
+    </div>
+
+    <h2 class="text-2xl font-semibold mt-10 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+      Prefix Labels
+    </h2>
+
+    <!-- Effort Labels Section -->
+    <section data-section="effort" class="mb-10">
+      <h3 class="text-xl font-semibold mt-6 mb-2">Effort Labels</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Fibonacci scale for estimating the amount of effort required</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-12" id="effort-labels">
+        <!-- Labels will be inserted here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Priority Labels Section -->
+    <section data-section="priority" class="mb-10">
+      <h3 class="text-xl font-semibold mt-6 mb-2">Priority Labels</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Task urgency and scheduling</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-12" id="priority-labels">
+        <!-- Labels will be inserted here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- State Labels Section -->
+    <section data-section="state" class="mb-10">
+      <h3 class="text-xl font-semibold mt-6 mb-2">State Labels</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Current decision status</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-12" id="state-labels">
+        <!-- Labels will be inserted here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Type Labels Section -->
+    <section data-section="type" class="mb-10">
+      <h3 class="text-xl font-semibold mt-6 mb-2">Type Labels</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Category of task</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-12" id="type-labels">
+        <!-- Labels will be inserted here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Work Labels Section -->
+    <section data-section="work" class="mb-10">
+      <h3 class="text-xl font-semibold mt-6 mb-2">Work Labels</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Nature of work complexity</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-12" id="work-labels">
+        <!-- Labels will be inserted here by JavaScript -->
+      </div>
+    </section>
+
+    <h2 class="text-2xl font-semibold mt-10 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+      Reserved Labels
+    </h2>
+
+    <!-- Reserved Labels Section -->
+    <section data-section="reserved" class="mb-10">
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Special-purpose metadata labels with key-value pair format</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-12" id="reserved-labels">
+        <!-- Labels will be inserted here by JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-6 text-center text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
+    <div class="container mx-auto px-4">
+      <p>GitHub Label System &copy; 2025 | Create consistent issue management across repositories</p>
+    </div>
+  </footer>
+
+  <script>
+    // Label data
+    const labelData = {
+      prefix: {
+        // Effort labels
+        effort: [
+          {
+            "name": "Effort: 1",
+            "color": "f6f6f6",
+            "description": "Minimal effort required (1 point)"
+          },
+          {
+            "name": "Effort: 2",
+            "color": "e2e2e2",
+            "description": "Very small effort required (2 points)"
+          },
+          {
+            "name": "Effort: 3",
+            "color": "8b8b8b",
+            "description": "Small effort required (3 points)"
+          },
+          {
+            "name": "Effort: 5",
+            "color": "6f6f6f",
+            "description": "Medium effort required (5 points)"
+          },
+          {
+            "name": "Effort: 8",
+            "color": "3e3e3e",
+            "description": "Large effort required (8 points)"
+          },
+          {
+            "name": "Effort: 13",
+            "color": "222222",
+            "description": "Very large effort required (13 points)"
+          }
+        ],
+        // Priority labels
+        priority: [
+          {
+            "name": "Priority: now",
+            "color": "ff4647",
+            "description": "Needs immediate attention"
+          },
+          {
+            "name": "Priority: 2day",
+            "color": "fd4d00",
+            "description": "Should be addressed within 2 days"
+          },
+          {
+            "name": "Priority: soon",
+            "color": "ffe53e",
+            "description": "Should be addressed soon"
+          }
+        ],
+        // State labels
+        state: [
+          {
+            "name": "State: approved",
+            "color": "72ff6c",
+            "description": "Approved for implementation"
+          },
+          {
+            "name": "State: blocked",
+            "color": "ff4647",
+            "description": "Blocked, cannot proceed"
+          },
+          {
+            "name": "State: inactive",
+            "color": "8b8b8b",
+            "description": "Not currently being worked on"
+          },
+          {
+            "name": "State: pending",
+            "color": "ffe53e",
+            "description": "Awaiting decision or action"
+          }
+        ],
+        // Type labels
+        type: [
+          {
+            "name": "Type: bug",
+            "color": "ff4647",
+            "description": "Something isn't working correctly"
+          },
+          {
+            "name": "Type: chore",
+            "color": "8b8b8b",
+            "description": "Maintenance task with no user-facing value"
+          },
+          {
+            "name": "Type: discussion",
+            "color": "0089fc",
+            "description": "Discussion or feedback needed"
+          },
+          {
+            "name": "Type: docs",
+            "color": "42ffc6",
+            "description": "Documentation addition or update"
+          },
+          {
+            "name": "Type: feature",
+            "color": "72ff6c",
+            "description": "New feature or enhancement"
+          },
+          {
+            "name": "Type: fix",
+            "color": "fd4d00",
+            "description": "Bug fix or error correction"
+          },
+          {
+            "name": "Type: security",
+            "color": "ff2fb2",
+            "description": "Security vulnerability or concern"
+          },
+          {
+            "name": "Type: testing",
+            "color": "00ffe4",
+            "description": "Test creation or modification"
+          }
+        ],
+        // Work labels
+        work: [
+          {
+            "name": "Work: chaotic",
+            "color": "ff4647",
+            "description": "Unpredictable work with high uncertainty"
+          },
+          {
+            "name": "Work: complex",
+            "color": "fd4d00",
+            "description": "Work with many interconnected parts"
+          },
+          {
+            "name": "Work: complicated",
+            "color": "ffe53e",
+            "description": "Detailed work requiring expertise"
+          },
+          {
+            "name": "Work: obvious",
+            "color": "72ff6c",
+            "description": "Clear, straightforward work"
+          }
+        ]
+      },
+      // Reserved labels
+      reserved: [
+        {
+          "name": "Assignee",
+          "color": "d150ff",
+          "description": "The person assigned to the task [user:username]"
+        },
+        {
+          "name": "Cycle",
+          "color": "0089fc",
+          "description": "The current iteration cycle [sprint:Sprint 1]"
+        },
+        {
+          "name": "Effort",
+          "color": "fd4d00",
+          "description": "The amount of work required [points:5]"
+        },
+        {
+          "name": "Estimate",
+          "color": "b98300",
+          "description": "The estimated time to complete the task [hours:3]"
+        },
+        {
+          "name": "Hours",
+          "color": "00fafb",
+          "description": "Actual hours spent on the task [logged:2.5]"
+        },
+        {
+          "name": "Priority",
+          "color": "ff426c",
+          "description": "The task priority level [level:High]"
+        },
+        {
+          "name": "Project",
+          "color": "657eff",
+          "description": "The project to which the task belongs [name:Project Alpha]"
+        },
+        {
+          "name": "State",
+          "color": "72ff6c",
+          "description": "The current state of the task [status:In Progress]"
+        },
+        {
+          "name": "Status",
+          "color": "5dffa2",
+          "description": "The overall task status [state:Open]"
+        }
+      ]
+    };
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', () => {
+      setupThemeToggle();
+      renderLabels();
+      setupFilterButtons();
+    });
+
+    // Theme toggle functionality
+    function setupThemeToggle() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeLabel = document.getElementById('theme-label');
+      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+      // Check for saved theme or system preference
+      const currentTheme = window.safeStorage.getItem('theme');
+      const isDarkMode = currentTheme === 'dark' ||
+                         (!currentTheme && prefersDarkScheme.matches);
+
+      // Set initial state
+      document.documentElement.classList.toggle('dark', isDarkMode);
+      themeToggle.checked = isDarkMode;
+      themeLabel.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+
+      // Toggle theme when checkbox is clicked
+      themeToggle.addEventListener('change', () => {
+        const isDark = themeToggle.checked;
+        document.documentElement.classList.toggle('dark', isDark);
+        window.safeStorage.setItem('theme', isDark ? 'dark' : 'light');
+        themeLabel.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+      });
+
+      // Handle system preference changes
+      prefersDarkScheme.addEventListener('change', (e) => {
+        if (!window.safeStorage.getItem('theme')) {
+          const isDark = e.matches;
+          document.documentElement.classList.toggle('dark', isDark);
+          themeToggle.checked = isDark;
+          themeLabel.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        }
+      });
+    }
+
+    // Render all label cards
+    function renderLabels() {
+      // Render prefix labels
+      for (const category in labelData.prefix) {
+        const container = document.getElementById(`${category}-labels`);
+        if (container) {
+          container.innerHTML = '';
+          labelData.prefix[category].forEach(label => {
+            container.appendChild(createLabelCard(label));
+          });
+        }
+      }
+
+      // Render reserved labels
+      const reservedContainer = document.getElementById('reserved-labels');
+      if (reservedContainer) {
+        reservedContainer.innerHTML = '';
+        labelData.reserved.forEach(label => {
+          reservedContainer.appendChild(createLabelCard(label));
+        });
+      }
+    }
+
+    // Create a label card element
+    function createLabelCard(label) {
+      // Determine text color based on background brightness
+      const textColorClass = getTextColorClass(label.color);
+
+      const card = document.createElement('div');
+      card.className = 'border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow transition-shadow duration-200 bg-white dark:bg-gray-800 overflow-hidden h-full flex flex-col';
+
+      card.innerHTML = `
+        <div class="h-2" style="background-color: #${label.color}"></div>
+        <div class="p-4 flex-grow flex flex-col">
+          <div class="mb-2">
+            <span class="inline-block px-2 py-1 rounded-full text-sm ${textColorClass}" style="background-color: #${label.color}">
+              ${label.name}
+            </span>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">${label.description}</p>
+          <div class="mt-auto pt-3 text-xs text-gray-500 dark:text-gray-500">
+            #${label.color}
+          </div>
+        </div>
+      `;
+
+      return card;
+    }
+
+    // Determine text color class based on background brightness
+    function getTextColorClass(hexColor) {
+      const r = parseInt(hexColor.substring(0, 2), 16);
+      const g = parseInt(hexColor.substring(2, 4), 16);
+      const b = parseInt(hexColor.substring(4, 6), 16);
+
+      // Calculate brightness using the YIQ formula
+      const brightness = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+      return brightness >= 128 ? 'text-gray-900' : 'text-white';
+    }
+
+    // Set up filter button functionality
+    function setupFilterButtons() {
+      const filterButtons = document.querySelectorAll('.filter-button');
+      const mainContent = document.getElementById('main-content');
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Save current scroll position
+          const currentScrollPosition = window.scrollY;
+
+          // Remove active class from all buttons
+          filterButtons.forEach(btn => {
+            btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+            btn.classList.add('bg-white', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200', 'border-gray-300', 'dark:border-gray-600');
+          });
+
+          // Add active class to clicked button
+          button.classList.remove('bg-white', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200', 'border-gray-300', 'dark:border-gray-600');
+          button.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+
+          // Set filter on main content container
+          const filter = button.getAttribute('data-filter');
+
+          // Remove existing filter classes
+          mainContent.className = mainContent.className
+            .replace(/filter-active-\w+/g, '')
+            .trim();
+
+          // Add new filter class if not "all"
+          if (filter !== 'all') {
+            mainContent.classList.add(`filter-active-${filter}`);
+          }
+
+          // Restore scroll position
+          requestAnimationFrame(() => {
+            window.scrollTo({
+              top: currentScrollPosition,
+              behavior: 'instant'
+            });
+          });
+        });
+      });
+    }
+  </script>
+</body>
+</html>
