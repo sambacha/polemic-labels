@@ -1,0 +1,41 @@
+[  {
+    "name": "Type: bug",
+    "color": "ff4647",
+    "description": "Something isn't working correctly"
+  },
+  {
+    "name": "Type: chore",
+    "color": "8b8b8b",
+    "description": "Maintenance task with no user-facing value"
+  },
+  {
+    "name": "Type: discussion",
+    "color": "0089fc",
+    "description": "Discussion or feedback needed"
+  },
+  {
+    "name": "Type: docs",
+    "color": "42ffc6",
+    "description": "Documentation addition or update"
+  },
+  {
+    "name": "Type: feature",
+    "color": "72ff6c",
+    "description": "New feature or enhancement"
+  },
+  {
+    "name": "Type: fix",
+    "color": "fd4d00",
+    "description": "Bug fix or error correction"
+  },
+  {
+    "name": "Type: security",
+    "color": "ff2fb2",
+    "description": "Security vulnerability or concern"
+  },
+  {
+    "name": "Type: testing",
+    "color": "00ffe4",
+    "description": "Test creation or modification"
+  }
+]

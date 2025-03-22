@@ -1,0 +1,22 @@
+[
+  {
+    "name": "State: approved",
+    "color": "72ff6c",
+    "description": "Approved for implementation"
+  },
+  {
+    "name": "State: blocked",
+    "color": "ff4647",
+    "description": "Blocked, cannot proceed"
+  },
+  {
+    "name": "State: inactive",
+    "color": "8b8b8b",
+    "description": "Not currently being worked on"
+  },
+  {
+    "name": "State: pending",
+    "color": "ffe53e",
+    "description": "Awaiting decision or action"
+  }
+]
