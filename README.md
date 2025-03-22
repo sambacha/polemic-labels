@@ -1,18 +1,211 @@
+# [Polemic Labels](https://sambacha.github.io/polemic-labels/)
+
+
+> [!IMPORTANT]
+> A Systematized Taxonomic Framework for Issue Categorization
+>  WCAG 2.0 Accessibility Standards Implementation
+
+
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [Polemic Labels](#polemic-labels)
-  - [Color Sets](#color-sets)
-  - [Prefix Labels](#prefix-labels)
-  - [Reserved Labels](#reserved-labels)
-  - [Examples](#examples)
+   * [Abstract](#abstract)
+   * [Color Theory[^1]](#color-theory1)
+      + [Issue Category ](#issue-category)
+      + [Issue Status](#issue-status)
+      + [Issue Priority  ](#issue-priority)
+   * [Overview](#overview)
+   * [Color Sets](#color-sets)
+   * [Prefix Labels](#prefix-labels)
+   * [Reserved Labels](#reserved-labels)
+   * [Examples](#examples)
+   * [Tests](#tests)
+      + [Quickcheck ](#quickcheck)
+   * [Citations](#citations)
 
 <!-- TOC end -->
 
-<!-- TOC --><a name="polemic-labels"></a>
+## Abstract
 
-# Polemic Labels
+Polemic Labels is a comprehensive and methodologically rigorous classification schema for Linear and GitHub (and any other 'task'/'bug' tracker) issue management, incorporating empirically-validated contrast ratio recommendations in accordance with Web Content Accessibility Guidelines 2.0 to ensure optimal visual perception across diverse user populations.
 
-<!-- TOC --><a name="color-sets"></a>
+## Color Theory[^1]
+
+- Sequential Scheme[^2]
+  Applied to issue statuses, showing clear progression from light blue (backlog) to dark blue (done), making it easy to visualize how far along issues are in the workflow.
+  
+- Diverging Scheme[^2]
+  Used for priority levels, with a neutral midpoint (medium priority) and contrasting colors for the extremes (blues for low priorities, reds for high priorities).
+  
+- Qualitative Scheme[^3]
+   Applied to issue categories, using distinctive hues to differentiate between types without implying any hierarchy or magnitude relationship.
+
+### Issue Category 
+
+Qualitative color scheme - uses distinct hues to differentiate categories without implying any hierarchy or magnitude relationship
+
+> [!TIP]
+>  Distinct hues (for categorical data)
+
+---
+
+### Issue Status
+
+Sequential color scheme - represents workflow progression from start to completion. Colors transition from light to dark blue as the issue advances
+Issue Status: Following a sequential scheme: light → dark represents progress
+
+> [!TIP]
+>  Progression from light to dark (for ordered data)
+
+
+---
+
+
+### Issue Priority  
+
+Diverging color scheme - emphasizes critical middle values with neutral color and uses contrasting colors (blue vs red) for opposite extremes
+> [!TIP]   
+>  Emphasizes middle values and extremes (for data with critical midpoint)
+
+
+<br />
+<br />
+
+## Overview
+
+<details><summary>TypeScript Reference</summary>
+<p>
+
+
+```typescript
+/**
+ * GitHub Issue Schema with Color Scheme Implementation
+ * 
+ * This module defines a type system for GitHub issues that incorporates
+ * three distinct color scheme approaches for different issue attributes:
+ * - Sequential: For status (progression through workflow)
+ * - Diverging: For priority (emphasizing critical values)
+ * - Qualitative: For categories (distinct types without implied hierarchy)
+ */
+
+/**
+ * Core issue data structure representing a GitHub issue with all its properties
+ */
+interface IssueSchema {
+  id: string;                  // Unique identifier for the issue
+  title: string;               // Issue title displayed in lists and headers
+  description: string;         // Detailed explanation of the issue
+  status: IssueStatus;         // Current workflow position (sequential scheme)
+  priority: IssuePriority;     // Importance level (diverging scheme)
+  category: IssueCategory;     // Issue type classification (qualitative scheme)
+  createdAt: Date;             // Timestamp when issue was created
+  updatedAt: Date;             // Timestamp of last modification
+  assignee?: string;           // Optional username of assigned developer
+  labels: string[];            // Additional custom categorization tags
+  colorScheme: ColorSchemeType; // Visual representation strategy used
+}
+
+/**
+ * Sequential color scheme - represents workflow progression from start to completion. Colors transition from light to dark blue as the issue advances
+ * Colors transition from light to dark blue as the issue advances
+ */
+enum IssueStatus {
+  BACKLOG = "backlog",         // Initial planning state (#E3F2FD - very light blue)
+  TODO = "todo",               // Ready to be worked on (#BBDEFB - light blue)
+  IN_PROGRESS = "in_progress", // Currently being implemented (#64B5F6 - medium blue)
+  REVIEW = "review",           // Under peer evaluation (#2196F3 - blue)
+  DONE = "done"                // Completed and verified (#0D47A1 - dark blue)
+}
+
+/**
+ * Diverging color scheme - emphasizes critical middle values with neutral color and uses contrasting colors (blue vs red) for opposite extremes
+ * and uses contrasting colors (blue vs red) for opposite extremes
+ */
+enum IssuePriority {
+  LOWEST = "lowest",           // Minimal urgency (#1A237E - dark blue)
+  LOW = "low",                 // Below average urgency (#7986CB - medium blue)
+  MEDIUM = "medium",           // Standard priority (#F5F5F5 - neutral light gray)
+  HIGH = "high",               // Above average urgency (#EF9A9A - medium red)
+  HIGHEST = "highest"          // Critical urgency (#B71C1C - dark red)
+}
+
+/**
+ * Qualitative color scheme - uses distinct hues to differentiate categories without implying any hierarchy or magnitude relationship
+ * without implying any hierarchy or magnitude relationship
+ */
+enum IssueCategory {
+  BUG = "bug",                 // Code defect (#F44336 - red)
+  FEATURE = "feature",         // New functionality (#4CAF50 - green)
+  DOCUMENTATION = "documentation", // Content improvements (#FF9800 - orange)
+  REFACTOR = "refactor",       // Code restructuring (#9C27B0 - purple)
+  ENHANCEMENT = "enhancement", // Existing feature improvement (#009688 - teal)
+  SECURITY = "security",       // Safety vulnerability (#C2185B - pink)
+  PERFORMANCE = "performance"  // Speed optimization (#FFC107 - amber)
+}
+
+/**
+ * Available color scheme approaches for different visualization needs
+ */
+enum ColorSchemeType {
+  SEQUENTIAL = "sequential",   // Progression from light to dark (for ordered data)
+  DIVERGING = "diverging",     // Emphasizes middle values and extremes (for data with critical midpoint)
+  QUALITATIVE = "qualitative"  // Distinct hues (for categorical data)
+}
+
+/**
+ * Retrieves the appropriate hex color code for an issue status
+ * Following a sequential scheme: light → dark represents progress
+ */
+function getStatusColor(status: IssueStatus): string {
+  const statusColors = {
+    [IssueStatus.BACKLOG]: "#E3F2FD",
+    [IssueStatus.TODO]: "#BBDEFB",
+    [IssueStatus.IN_PROGRESS]: "#64B5F6",
+    [IssueStatus.REVIEW]: "#2196F3", 
+    [IssueStatus.DONE]: "#0D47A1"
+  };
+  
+  return statusColors[status];
+}
+
+/**
+ * Retrieves the appropriate hex color code for an issue priority
+ * Following a diverging scheme: contrasting hues for extremes with neutral midpoint
+ */
+function getPriorityColor(priority: IssuePriority): string {
+  const priorityColors = {
+    [IssuePriority.LOWEST]: "#1A237E",
+    [IssuePriority.LOW]: "#7986CB",
+    [IssuePriority.MEDIUM]: "#F5F5F5",
+    [IssuePriority.HIGH]: "#EF9A9A",
+    [IssuePriority.HIGHEST]: "#B71C1C"
+  };
+  
+  return priorityColors[priority];
+}
+
+/**
+ * Retrieves the appropriate hex color code for an issue category
+ * Following a qualitative scheme: distinct hues for unrelated categories
+ */
+function getCategoryColor(category: IssueCategory): string {
+  const categoryColors = {
+    [IssueCategory.BUG]: "#F44336",
+    [IssueCategory.FEATURE]: "#4CAF50",
+    [IssueCategory.DOCUMENTATION]: "#FF9800",
+    [IssueCategory.REFACTOR]: "#9C27B0",
+    [IssueCategory.ENHANCEMENT]: "#009688",
+    [IssueCategory.SECURITY]: "#C2185B",
+    [IssueCategory.PERFORMANCE]: "#FFC107"
+  };
+  
+  return categoryColors[category];
+}
+```
+
+</p>
+</details> 
+
 
 ## Color Sets
 
@@ -44,7 +237,6 @@
 | **Magenta**    | #fff3fc     | #ffd7f6     | #f911e0     | #ca00b6     | #740068     | #44003c     |
 | **Pink**       | #fff7fb     | #ffdcec     | #ff2fb2     | #d2008f     | #790051     | #4b0030     |
 
-<!-- TOC --><a name="prefix-labels"></a>
 
 ## Prefix Labels
 
@@ -56,7 +248,6 @@
 | Type     | Category of task          | bug, chore, discussion, docs, feature, fix, security, testing |
 | Work     | Nature of work complexity | chaotic, complex, complicated, obvious                        |
 
-<!-- TOC --><a name="reserved-labels"></a>
 
 ## Reserved Labels
 
@@ -72,7 +263,6 @@
 | State      | The current state of the task           | Yes      | "status": "In Progress" |
 | Status     | The overall task status                 | Yes      | "state": "Open"         |
 
-<!-- TOC --><a name="examples"></a>
 
 ## Examples
 
@@ -168,3 +358,27 @@
     ✓ No name collisions should exist between prefix and reserved labels (19954 ms)
 
 ```
+
+
+
+## Citations
+
+[^1]: Harrower, Mark, and Cynthia A. Brewer. 2003. "ColorBrewer: An Online Tool for Selecting Color Schemes for Maps." The Cartographic Journal 40 (1): 27-37.
+
+<br />
+
+[^2]: Slocum, Terry A., Robert B. McMaster, Fritz C. Kessler, and Hugh H. Howard. 2008. Thematic Cartography and Visualization. Upper Saddle River, NJ: Prentice Hall.
+
+<br />
+
+[^3]: Brewer, Cynthia A. 1994. "Color Use Guidelines for Mapping and Visualization." In Visualization in Modern Cartography, edited by Alan M. MacEachren and D. R. Fraser Taylor, 123-147. Oxford: Pergamon.
+
+<br />
+
+### Note
+
+> [!WARNING]
+> These labels are not in use in this repository, take that as you will.
+
+> [!NOTE]
+> T.B.D
